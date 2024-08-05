@@ -1,0 +1,29 @@
+Dependies installation code is 
+pip install transformers torch pillow
+
+
+from transformers import DALL_E, DALL_EFeatureExtractor
+import torch
+from PIL import Image
+
+# Load DALL-E Mini model and feature extractor
+model = DALL_E.from_pretrained("dalle-mini/dalle-mini")
+feature_extractor = DALL_EFeatureExtractor.from_pretrained("dalle-mini/dalle-mini")
+
+# Define the text prompt
+prompt = "A futuristic cityscape with flying cars and neon lights"
+
+# Prepare the text prompt for DALL-E Mini
+inputs = feature_extractor([prompt], return_tensors="pt")
+
+# Generate the image
+with torch.no_grad():
+    outputs = model.generate(**inputs)
+
+# Convert output to PIL image
+image = Image.fromarray(outputs[0].cpu().numpy())
+
+# Save or display the image
+image.save("generated_image_dalle_mini.png")
+image.show()
+ 
